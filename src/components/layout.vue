@@ -5,10 +5,7 @@
         <j-aside></j-aside>
       </el-aside>
       <el-container>
-        <el-header>
-          <j-tabs></j-tabs>
-        </el-header>
-        <el-main>Main</el-main>
+        <j-tabs></j-tabs>
       </el-container>
     </el-container>
   </el-container>
@@ -28,10 +25,10 @@
 
 <style lang="stylus">
   .el-header, .el-footer {
-    background-color: #B3C0D1;
+    background-color: #ffffff;
     color: #333;
     text-align: center;
-    line-height: 60px;
+    /*line-height: 60px;*/
   }
 
   .el-aside {
@@ -39,6 +36,7 @@
     color: #333;
     text-align: center;
     overflow-x: hidden;
+    border-right-style: groove;
     /*line-height: 200px;*/
   }
 

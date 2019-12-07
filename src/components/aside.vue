@@ -2,18 +2,14 @@
   <div>
     <el-col>
       <el-menu
-        default-active="2"
+        :default-active="defaultActive"
         class="el-menu-vertical-demo"
         @select="goto"
         @open="handleOpen"
         @close="handleClose">
-        <el-menu-item index="1">
+        <el-menu-item v-for="(item,index) in memus" :index="index+1+''" :key="item.title">
           <i class="el-icon-setting"></i>
-          <span slot="title">书籍列表</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航二</span>
+          <span slot="title">{{item.title}}</span>
         </el-menu-item>
       </el-menu>
     </el-col>
@@ -21,21 +17,43 @@
 </template>
 
 <script>
+  import { mapMutations } from 'vuex';
+
   export default {
     data() {
       return {
         name: 'aside',
+        memus: '',
+        // defaultActive: '',
       };
     },
+    created() {
+      this.memus = this.$store.state.menus;
+      // this.defaultActive = this.$store.state.editableTabsValue;
+    },
+    computed: {
+      // ...mapState
+      defaultActive() {
+        return this.$store.state.editableTabsValue;
+      },
+    },
     methods: {
+      ...mapMutations({
+        add: 'addTab',
+      }),
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
+      // eslint-disable-next-line no-unused-vars
       goto(key, keyPath) {
-        console.log(key, keyPath);
+        const tab = this.memus[key - 1];
+        this.add(tab);
+        if (this.$route.path !== tab.path) {
+          this.$router.push(tab.path);
+        }
       },
     },
   };

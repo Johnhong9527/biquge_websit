@@ -1,82 +1,80 @@
 <template>
-  <div>
-    <div style="margin-bottom: 20px;">
-      <el-button
-        size="small"
-        @click="addTab(editableTabsValue)"
-      >
-        add tab
-      </el-button>
-    </div>
-    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab"
-             @tab-click="goPage">
+  <div style="width: 100%">
+    <el-tabs v-model="editableTabsValue" @tab-remove="removeTab"
+             @tab-click="goPage"
+             @edit="edit"
+             closable
+             lazy
+    >
       <el-tab-pane
         v-for="(item, index) in editableTabs"
-        :key="item.name"
+        :key="item.name+index"
         :data-index="index"
+        :data-content="item.content"
         :label="item.title"
         :name="item.name"
       >
-        {{item.content}}
       </el-tab-pane>
+      <div class="j-router">
+        {{editableTabsValue}}
+        <router-view></router-view>
+      </div>
     </el-tabs>
   </div>
 </template>
-
 
 <script>
   /*
   使用vuex来传递 addTab 和 removeTab
    */
+  import { mapState, mapMutations } from 'vuex';
+
   export default {
+    created() {
+      // this.editableTabsValue = this.$store.state.editableTabsValue;
+    },
     data() {
-      return {
-        editableTabsValue: '2',
-        editableTabs: [{
-          title: 'Tab 1',
-          name: '1',
-          content: 'Tab 1 content',
-        }, {
-          title: 'Tab 2',
-          name: '2',
-          content: 'Tab 2 content',
-        }],
-        tabIndex: 2,
-      };
+      return {};
     },
     methods: {
-      addTab(targetName) {
-        console.log(targetName);
-        const newTabName = `${this.tabIndex + 1}`;
-        this.editableTabs.push({
-          title: 'New Tab',
-          name: newTabName,
-          content: 'New Tab content',
-        });
-        this.editableTabsValue = newTabName;
-      },
-      removeTab(targetName) {
-        const tabs = this.editableTabs;
-        let activeName = this.editableTabsValue;
-        if (activeName === targetName) {
-          tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-              const nextTab = tabs[index + 1] || tabs[index - 1];
-              if (nextTab) {
-                activeName = nextTab.name;
-              }
+      ...mapMutations({
+        tabPage: 'tabPage',
+        removeTab: 'removeTab',
+        edit: 'edit',
+      }),
+      // eslint-disable-next-line no-unused-vars
+      goPage(tab, event) {
+        Object.keys(this.menus)
+        .forEach((index) => {
+          if (this.menus[index].name === tab.name) {
+            const { path, name } = this.menus[index];
+            this.tabPage(name);
+            if (this.$route.path !== path) {
+              this.$router.push(path);
             }
-          });
-        }
-        this.editableTabsValue = activeName;
-        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+          }
+        });
       },
-      handleTabsEdit(targetName, action) {
-        console.log(targetName, action);
-      },
-      goPage(item) {
-        console.log(item);
+    },
+    computed: {
+      ...mapState({
+        editableTabs: state => state.editableTabs,
+        tabIndex: state => state.tabIndex,
+        menus: state => state.menus,
+      }),
+      editableTabsValue: {
+        get() {
+          return this.$store.state.editableTabsValue;
+        },
+        set(value) {
+          this.$store.commit('tabPage', value);
+        },
       },
     },
   };
 </script>
+<style lang="stylus">
+  .j-router
+    height calc(100vh - 100px)
+    overflow-y scroll
+</style>

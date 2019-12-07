@@ -9,7 +9,14 @@ import store from './store';
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
-
+// 全局守卫
+// eslint-disable-next-line no-unused-vars
+router.beforeEach((to, from, next) => {
+  if (to.name !== '' && to.name !== 'home' && !from.name) {
+    // router.push('/');
+  }
+  next();
+});
 new Vue({
   router,
   store,
