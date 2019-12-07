@@ -2,12 +2,16 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 // eslint-disable-next-line no-unused-vars
 import crypto from '../util/crypto';
+// eslint-disable-next-line no-unused-vars
 import API from '../util/api';
+import data from '../util/data.json';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    // book
+    bookInfo: {},
     // tabs
     editableTabsValue: '1',
     editableTabs: [{
@@ -34,10 +38,23 @@ export default new Vuex.Store({
     // api
     // eslint-disable-next-line no-unused-vars
     getBookList(state) {
-      API.getBookList()
+      /* API.getBookList()
       .then((res) => {
         console.log(res);
+      }); */
+      // console.log(data.data);
+      // test
+      // 添加length, 加密章节名
+      // eslint-disable-next-line array-callback-return
+      data.data.map((el) => {
+        // eslint-disable-next-line no-param-reassign
+        el.length = el.list.length;
+        // eslint-disable-next-line no-param-reassign
+        el.title = crypto.aesEncrypt(el.title);
+        // console.log(typeof el.title);
       });
+      state.bookInfo = data.data;
+      console.log(state.bookInfo);
     },
     // aside tab pages
     // eslint-disable-next-line no-unused-vars
