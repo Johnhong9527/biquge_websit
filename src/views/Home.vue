@@ -45,7 +45,7 @@
       handleClick(row) {
         console.log(row);
         // /view-book-chapter
-        this.$router.push('/view-book-chapter');
+        this.$router.push(`/view-book-chapter/${row.aid}`);
       },
       editClick(row) {
         console.log(row);

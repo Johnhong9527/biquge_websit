@@ -16,7 +16,6 @@
       >
       </el-tab-pane>
       <div class="j-router">
-        {{editableTabsValue}}
         <router-view></router-view>
       </div>
     </el-tabs>
@@ -77,4 +76,5 @@
   .j-router
     height calc(100vh - 100px)
     overflow-y scroll
+    padding 15px
 </style>

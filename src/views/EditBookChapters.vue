@@ -1,6 +1,6 @@
 <template>
   <div>
-    章节列表
+    编辑章节列表
   </div>
 </template>
 <script>
