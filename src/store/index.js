@@ -5,13 +5,16 @@ import crypto from '../util/crypto';
 // eslint-disable-next-line no-unused-vars
 import API from '../util/api';
 import data from '../util/data.json';
+import chapter from '../util/chapter.json';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     // book
-    bookInfo: {},
+    bookInfo: [],
+    book: {},
+    chapter: {},
     // tabs
     editableTabsValue: '1',
     editableTabs: [{
@@ -36,6 +39,17 @@ export default new Vuex.Store({
   },
   mutations: {
     // api
+    setBook(state, info) {
+      state.book = info;
+    },
+    setChapter(state, params) {
+      console.log(params);
+    },
+    // eslint-disable-next-line no-unused-vars
+    getChapter(state, params) {
+      state.chapter = chapter;
+      console.log(chapter);
+    },
     // eslint-disable-next-line no-unused-vars
     getBookList(state) {
       /* API.getBookList()
@@ -62,7 +76,7 @@ export default new Vuex.Store({
       state.editableTabsValue = tabs.name;
       console.log();
       if (JSON.stringify(state.editableTabs)
-      .indexOf(tabs.title) === -1) {
+        .indexOf(tabs.title) === -1) {
         state.editableTabs.push(tabs);
         // eslint-disable-next-line no-plusplus
         ++state.tabIndex;

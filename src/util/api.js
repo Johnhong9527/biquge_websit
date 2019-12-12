@@ -6,4 +6,7 @@ export default {
     // return axios.get('http://localhost:8080/static/data.json');
     return axios.get('./data.json');
   },
+  getChapter(params) {
+    return axios.get('./chapter.json', params);
+  },
 };

@@ -37,18 +37,19 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapState, mapMutations } from 'vuex';
 
   export default {
     name: 'home',
     methods: {
+      ...mapMutations(['setBook']),
       handleClick(row) {
-        console.log(row);
+        this.setBook(row);
         // /view-book-chapter
         this.$router.push(`/view-book-chapter/${row.aid}`);
       },
       editClick(row) {
-        console.log(row);
+        this.setBook(row);
       },
     },
     created() {

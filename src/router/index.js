@@ -26,6 +26,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "viewBookChapter" */ '../views/ViewBookChapters.vue'),
   },
+  {
+    path: '/view-chapter/:aid/:cid',
+    name: 'viewChapter',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "viewChapter" */ '../views/ViewChapter.vue'),
+  },
 ];
 
 const router = new VueRouter({
