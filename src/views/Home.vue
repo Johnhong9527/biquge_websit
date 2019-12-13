@@ -42,14 +42,15 @@
   export default {
     name: 'home',
     methods: {
-      ...mapMutations(['setBook']),
+      ...mapMutations(['getBook']),
       handleClick(row) {
-        this.setBook(row);
+        // console.log(row);
+        this.getBook(row);
         // /view-book-chapter
         this.$router.push(`/view-book-chapter/${row.aid}`);
       },
       editClick(row) {
-        this.setBook(row);
+        this.getBook(row);
       },
     },
     created() {
@@ -99,7 +100,7 @@
     },
     computed: {
       ...mapState({
-        tableData: state => state.bookInfo,
+        tableData: state => state.bookList,
       }),
     },
   };

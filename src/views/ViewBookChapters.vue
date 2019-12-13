@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row :key="chapters_key">
     <el-col class="book-info" :span="24">
       <el-row>
         <el-col :span="6" :xs="24">
@@ -41,7 +41,7 @@
     <el-col :span="24">
       <el-row>
         <el-col class="chapter text-left" :span="8" :xs="24" :sm="12" :md="8"
-                v-for="(item,index) in book.list"
+                v-for="(item,index) in book.chapters"
                 :key="item.title+index"
         >
           <div class="content" @click="viewChapter(item)" :title="item.title">{{item.title}}</div>
@@ -55,9 +55,14 @@
 
   export default {
     name: 'view-book-chapters',
+    data() {
+      return {
+        chapters: [],
+        chapters_key: '',
+      };
+    },
     created() {
-      // console.log(this.$route.params.aid);
-      console.log(this.$store.state.book);
+      this.chapters_key = JSON.stringify(new Date());
     },
     computed: {
       ...mapState({
@@ -67,7 +72,10 @@
     methods: {
       ...mapMutations(['setChapter']),
       viewChapter(item) {
-        this.$router.push(`/view-chapter/${item.aid}/${item.cid}`);
+        this.$router.push(`/view-chapter/${this.book.index}/${item.aid}/${item.cid}`);
+      },
+      getChapter() {
+
       },
     },
   };

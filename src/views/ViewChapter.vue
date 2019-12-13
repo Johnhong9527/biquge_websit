@@ -1,10 +1,14 @@
 <template>
   <el-row>
     <el-col :span="24">
-      <h1 class="title">{{chapter.title}}</h1>
+      <!--      <h1 class="title">{{chapter.title}}</h1>-->
+      <el-input type="text" v-model="chapter.title"></el-input>
     </el-col>
     <el-col :span="24">
-      <div class="content" v-html="chapter.content"></div>
+      <!--      <div class="content" v-html="chapter.content"></div>-->
+      <el-input :autosize="{ minRows: 2, maxRows: 20}" type="textarea" v-model="chapter.content"
+      ></el-input>
+      <el-button @click="test">test</el-button>
     </el-col>
   </el-row>
 </template>
@@ -17,7 +21,15 @@
       this.getChapter(this.$route.params);
     },
     methods: {
-      ...mapMutations(['getChapter']),
+      ...mapMutations(['getChapter', 'setChapter']),
+      test() {
+        this.setChapter({
+          content: this.chapter.content,
+          title: this.chapter.title,
+          ...this.$route.params,
+        });
+        this.$router.go(-1);
+      },
     },
     computed: {
       ...mapState({

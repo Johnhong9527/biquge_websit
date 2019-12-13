@@ -4,16 +4,14 @@ import Vuex from 'vuex';
 import crypto from '../util/crypto';
 // eslint-disable-next-line no-unused-vars
 import API from '../util/api';
-import data from '../util/data.json';
-import chapter from '../util/chapter.json';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     // book
-    bookInfo: [],
     book: {},
+    bookList: [],
     chapter: {},
     // tabs
     editableTabsValue: '1',
@@ -39,36 +37,52 @@ export default new Vuex.Store({
   },
   mutations: {
     // api
-    setBook(state, info) {
-      state.book = info;
-    },
-    setChapter(state, params) {
-      console.log(params);
+    // eslint-disable-next-line no-unused-vars
+    async getBookList(state) {
+      try {
+        const books = await API.getBookList();
+        // eslint-disable-next-line array-callback-return
+        books.data.map((el) => {
+          // eslint-disable-next-line no-param-reassign
+          el.title = crypto.aesEncrypt(el.title);
+          // console.log(typeof el.title);
+        });
+        state.bookList = books.data;
+      } catch (e) {
+        console.log(e);
+      }
     },
     // eslint-disable-next-line no-unused-vars
-    getChapter(state, params) {
-      state.chapter = chapter;
-      console.log(chapter);
+    async getBook(state, params) {
+      try {
+        const getBook = await API.getBook(params);
+        // getBook.data.title = crypto.aesEncrypt(getBook.data.title);
+        state.book = getBook.data;
+      } catch (e) {
+        console.log(e);
+      }
     },
-    // eslint-disable-next-line no-unused-vars
-    getBookList(state) {
-      /* API.getBookList()
-      .then((res) => {
-        console.log(res);
-      }); */
-      // console.log(data.data);
-      // test
-      // 添加length, 加密章节名
-      // eslint-disable-next-line array-callback-return
-      data.data.map((el) => {
-        // eslint-disable-next-line no-param-reassign
-        el.length = el.list.length;
-        // eslint-disable-next-line no-param-reassign
-        el.title = crypto.aesEncrypt(el.title);
-        // console.log(typeof el.title);
-      });
-      state.bookInfo = data.data;
-      console.log(state.bookInfo);
+    async getChapter(state, params) {
+      try {
+        const getChapter = await API.getChapter(params);
+        state.chapter = getChapter.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async setChapter(state, params) {
+      try {
+        await API.setChapter(params);
+        await API.editChapters(params);
+        await API.getBook({
+          index: params.index,
+          aid: params.aid,
+        });
+        // state.chapter.title = params.title;
+        // state.chapter.content = params.content;
+      } catch (e) {
+        console.log(e);
+      }
     },
     // aside tab pages
     // eslint-disable-next-line no-unused-vars
@@ -76,7 +90,7 @@ export default new Vuex.Store({
       state.editableTabsValue = tabs.name;
       console.log();
       if (JSON.stringify(state.editableTabs)
-        .indexOf(tabs.title) === -1) {
+      .indexOf(tabs.title) === -1) {
         state.editableTabs.push(tabs);
         // eslint-disable-next-line no-plusplus
         ++state.tabIndex;
