@@ -45,4 +45,8 @@
     color: #333;
     text-align: center;
   }
+
+  .el-container {
+    min-width: 500px
+  }
 </style>

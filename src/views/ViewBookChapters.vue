@@ -139,17 +139,11 @@
           cid: null,
           title: null,
           index,
+          book_index: this.book.index,
         };
         this.setDialogVisible(true);
       },
       addDow(item, index) {
-        console.log(item, index);
-        // eslint-disable-next-line no-param-reassign
-        item.cid = '';
-        // eslint-disable-next-line no-param-reassign
-        item.title = '';
-        // eslint-disable-next-line no-param-reassign
-        item.href = '';
         // eslint-disable-next-line no-param-reassign
         index += 1;
         this.chapterInfo = {
@@ -157,6 +151,7 @@
           cid: null,
           title: null,
           index,
+          book_index: this.book.index,
         };
         this.setDialogVisible(true);
       },
