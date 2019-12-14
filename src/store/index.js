@@ -9,6 +9,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    // components
+    dialogVisible: false,
     // book
     book: {},
     bookList: [],
@@ -37,6 +39,33 @@ export default new Vuex.Store({
   },
   mutations: {
     // api
+    // addChapter
+    // eslint-disable-next-line no-unused-vars,no-empty-function
+    async addChapter(state, params) {
+      if (params.cid && params.title) {
+        // eslint-disable-next-line radix,no-param-reassign
+        params.cid = Number.parseInt(params.cid);
+        await API.creChapter(params);
+        await API.insertChapters(params);
+      } else {
+        alert('创建失败');
+      }
+      state.dialogVisible = false;
+    },
+    async delChapter(state, params) {
+      const data = {
+        aid: params.aid,
+        cid: params.cid,
+        index: params.index,
+      };
+      await API.delChapter(data);
+      await API.delChapters(data);
+    },
+    // eslint-disable-next-line no-unused-vars
+    async delBook(state, params) {
+      console.log('关闭删除功能', params);
+      // await API.delBook(params);
+    },
     // eslint-disable-next-line no-unused-vars
     async getBookList(state) {
       try {
@@ -166,6 +195,10 @@ export default new Vuex.Store({
     //   state.
     //   console.log(path);
     // },
+    // set dialogVisible
+    setDialogVisible(state, value) {
+      state.dialogVisible = value;
+    },
   },
   actions: {},
   modules: {},

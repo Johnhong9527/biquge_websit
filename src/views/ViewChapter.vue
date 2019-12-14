@@ -1,41 +1,30 @@
 <template>
   <el-row>
     <el-col :span="24">
-      <!--      <h1 class="title">{{chapter.title}}</h1>-->
-      <el-input type="text" v-model="chapter.title"/>
+      <h1 class="title">{{chapter.title}}</h1>
     </el-col>
     <el-col :span="24">
-      <!--      <div class="content" v-html="chapter.content"></div>-->
-      <!--<el-input :autosize="{ minRows: 2, maxRows: 20}"
-                type="textarea"
-                class="content"
-                v-model="chapter.content"></el-input>-->
-      <tinymce v-model="chapter.content" :height="500"/>
+      <div class="content" v-html="chapter.content"></div>
       <br>
-      <el-button @click="save">保存</el-button>
+      <el-button @click="back">后退</el-button>
+      <el-button @click="edit">编辑</el-button>
     </el-col>
   </el-row>
 </template>
 <script>
   import { mapMutations, mapState } from 'vuex';
-  import Tinymce from '../components/Tinymce/index.vue';
 
   export default {
     name: 'view-chapter',
     created() {
       this.getChapter(this.$route.params);
     },
-    // eslint-disable-next-line vue/no-unused-components
-    components: { Tinymce },
     methods: {
-      ...mapMutations(['getChapter', 'setChapter']),
-      save() {
-        // console.log(this.chapter.content);
-        this.setChapter({
-          content: this.chapter.content,
-          title: this.chapter.title,
-          ...this.$route.params,
-        });
+      ...mapMutations(['getChapter']),
+      edit() {
+        this.$router.push(`/edit-chapter/${this.$route.params.index}/${this.$route.params.aid}/${this.$route.params.cid}`);
+      },
+      back() {
         this.$router.go(-1);
       },
     },
@@ -54,12 +43,16 @@
     text-align: center
 
   .content
-    white-space pre
+    /*white-space pre*/
     text-align left
     font-size: 10pt
     letter-spacing: 0.2em
     line-height: 150%
     padding-top: 15px
     width: 85%
+
+    & > p
+      margin-bottom: 10px
+      padding: 0 20px
 
 </style>

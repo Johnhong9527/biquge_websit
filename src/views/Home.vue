@@ -27,10 +27,12 @@
     </el-table-column>
     <el-table-column
       fixed="right"
+      width="150"
       label="操作">
       <template slot-scope="scope">
         <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
         <el-button @click="editClick(scope.row)" type="text" size="small">编辑</el-button>
+        <el-button @click="delClick(scope.row)" type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -42,7 +44,7 @@
   export default {
     name: 'home',
     methods: {
-      ...mapMutations(['addTab']),
+      ...mapMutations(['addTab', 'delBook']),
       handleClick(row) {
         // console.log(row);
         // this.getBook(row);
@@ -51,6 +53,9 @@
       },
       editClick(row) {
         this.getBook(row);
+      },
+      delClick(row) {
+        this.delBook(row);
       },
     },
     created() {
