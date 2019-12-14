@@ -1,5 +1,5 @@
 <template>
-  <el-row :key="chapters_key">
+  <el-row>
     <el-col class="book-info" :span="24">
       <el-row>
         <el-col :span="6" :xs="24">
@@ -42,9 +42,10 @@
       <el-row>
         <el-col class="chapter text-left" :span="8" :xs="24" :sm="12" :md="8"
                 v-for="(item,index) in book.chapters"
-                :key="item.title+index"
-        >
-          <div class="content" @click="viewChapter(item)" :title="item.title">{{item.title}}</div>
+                :key="item.title+index">
+          <div class="content" @click="viewChapter(item)"
+               :title="item.title">{{item.title}}
+          </div>
         </el-col>
       </el-row>
     </el-col>
@@ -61,16 +62,23 @@
         chapters_key: '',
       };
     },
-    created() {
-      this.chapters_key = JSON.stringify(new Date());
+    async created() {
+      await this.getBook(this.$route.params);
     },
+    // beforeRouteEnter(to, from, next) {
+    //   if (from.name === 'viewChapter') {
+    //     // eslint-disable-next-line no-restricted-globals
+    //     // location.reload();
+    //   }
+    //   next();
+    // },
     computed: {
       ...mapState({
         book: state => state.book,
       }),
     },
     methods: {
-      ...mapMutations(['setChapter']),
+      ...mapMutations(['setChapter', 'getBook']),
       viewChapter(item) {
         this.$router.push(`/view-chapter/${this.book.index}/${item.aid}/${item.cid}`);
       },

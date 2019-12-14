@@ -56,7 +56,6 @@ export default new Vuex.Store({
     async getBook(state, params) {
       try {
         const getBook = await API.getBook(params);
-        // getBook.data.title = crypto.aesEncrypt(getBook.data.title);
         state.book = getBook.data;
       } catch (e) {
         console.log(e);
@@ -70,14 +69,40 @@ export default new Vuex.Store({
         console.log(e);
       }
     },
+    // eslint-disable-next-line no-unused-vars
     async setChapter(state, params) {
       try {
+        let { content } = params;
+        // 处理数据
+        if (content.indexOf('&nbsp;&nbsp;&nbsp;&nbsp;') > -1) {
+          // eslint-disable-next-line no-const-assign
+          content = content.replace('<p>', '')
+          .replace('</p>', '');
+          const arr = content.split('&nbsp;&nbsp;&nbsp;&nbsp;');
+          // eslint-disable-next-line camelcase,no-unused-vars
+          let new_content = '';
+          arr.forEach((el) => {
+            if (el !== '') {
+              // eslint-disable-next-line camelcase
+              new_content += `<p>${el}</p>`;
+            }
+          });
+          // eslint-disable-next-line camelcase,no-param-reassign
+          params.content = new_content;
+        }
+        console.log('params.content', params.content);
         await API.setChapter(params);
-        await API.editChapters(params);
-        await API.getBook({
+        await API.editChapters({
+          aid: params.aid,
+          cid: params.cid,
+          index: params.index,
+          title: params.title,
+        });
+        const getBook = await API.getBook({
           index: params.index,
           aid: params.aid,
         });
+        state.book = getBook.data;
         // state.chapter.title = params.title;
         // state.chapter.content = params.content;
       } catch (e) {

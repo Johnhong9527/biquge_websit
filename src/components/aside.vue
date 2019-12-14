@@ -24,18 +24,20 @@
       return {
         name: 'aside',
         memus: '',
-        // defaultActive: '',
+        defaultActive: '',
       };
     },
     created() {
       this.memus = this.$store.state.menus;
-      // this.defaultActive = this.$store.state.editableTabsValue;
     },
     computed: {
       // ...mapState
-      defaultActive() {
-        return this.$store.state.editableTabsValue;
-      },
+      // defaultActive() {
+      //   if (this.$store.state.editableTabsValue < 3) {
+      //     return this.$store.state.editableTabsValue;
+      //   }
+      //   return 1;
+      // },
     },
     methods: {
       ...mapMutations({
