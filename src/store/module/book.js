@@ -1,0 +1,48 @@
+import API from '../../util/api';
+
+export default {
+  namespaced: true,
+  state: {
+    total: 0,
+    pageSize: 5,
+    currentPage: 1,
+    book: {},
+  },
+  mutations: {
+    getBook(state, book) {
+      state.book = book;
+    },
+    setTotal(state, total) {
+      state.total = total;
+    },
+    setPageSize(state, pageSize) {
+      state.pageSize = pageSize;
+    },
+    setCurrentPage(state, currentPage) {
+      state.currentPage = currentPage;
+    },
+  },
+  actions: {
+    async getBook({ commit }, { index, aid, currentPage, pageSize }) {
+      const book = await API.getBook({
+        index,
+        aid,
+        currentPage,
+        pageSize,
+      });
+      commit('getBook', book.data);
+      commit('setTotal', book.data.total);
+      commit('setPageSize', pageSize);
+      commit('setCurrentPage', currentPage);
+    },
+    setTotal({ commit }, total) {
+      commit('setTotal', total);
+    },
+    setPageSize({ commit }, pageSize) {
+      commit('setPageSize', pageSize);
+    },
+    setCurrentPage({ commit }, currentPage) {
+      commit('setCurrentPage', currentPage);
+    },
+  },
+};

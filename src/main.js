@@ -13,7 +13,7 @@ Vue.config.productionTip = false;
 // eslint-disable-next-line no-unused-vars
 router.beforeEach((to, from, next) => {
   if (to.name !== '' && to.name !== 'home' && !from.name) {
-    router.push('/');
+    // router.push('/');
   }
   next();
 });

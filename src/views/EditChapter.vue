@@ -1,69 +1,97 @@
 <template>
-  <el-row>
+  <el-row class="chapter-box">
     <el-col :span="24">
-      <!--      <h1 class="title">{{chapter.title}}</h1>-->
-      <el-input type="text" v-model="chapter.title"/>
+      <el-input type="text" v-if="title" v-model="title">
+        <template slot="prepend">章节名</template>
+      </el-input>
+      <br />
+      <br />
     </el-col>
-    <el-col :span="24">
-      <!--      <div class="content" v-html="chapter.content"></div>-->
-      <!--<el-input :autosize="{ minRows: 2, maxRows: 20}"
-                type="textarea"
-                class="content"
-                v-model="chapter.content"></el-input>-->
-      <tinymce v-model="chapter.content" :height="500"/>
-      <br>
+    <el-col :span="24" v-if="chapter && chapter.content" :key="tinymceKey">
+      <!-- <tinymce v-model="chapter.content" :key="tinymceKey" :height="500" /> -->
+      <tinymce :value="content" @input="setContent" :height="500" />
+      <br />
       <el-button @click="back">后退</el-button>
       <el-button @click="save">保存</el-button>
     </el-col>
   </el-row>
 </template>
 <script>
-  import { mapMutations, mapState } from 'vuex';
-  import Tinymce from '../components/Tinymce/index.vue';
+import { mapState, mapActions } from 'vuex';
+import Tinymce from '../components/Tinymce/index.vue';
 
-  export default {
-    name: 'view-chapter',
-    created() {
-      this.getChapter(this.$route.params);
+export default {
+  name: 'view-chapter',
+  async created() {
+    await this.getChapter(this.$route.params);
+    this.tinymceKey = Date.parse(new Date());
+    console.log(this.tinymceKey);
+  },
+  data() {
+    return {
+      tinymceKey: '',
+    };
+  },
+  components: { Tinymce },
+  methods: {
+    ...mapActions('mChapter', [
+      'getChapter',
+      'setChapter',
+      'setContent',
+      'setTitle',
+    ]),
+
+    save() {
+      this.setChapter({
+        ...this.$route.params,
+        ...this.chapter,
+        content: this.content,
+        title: this.title,
+      });
+      // this.$router.go(-1);
     },
-    // eslint-disable-next-line vue/no-unused-components
-    components: { Tinymce },
-    methods: {
-      ...mapMutations(['getChapter', 'setChapter']),
-      save() {
-        // console.log(this.chapter.content);
-        this.setChapter({
-          content: this.chapter.content,
-          title: this.chapter.title,
-          ...this.$route.params,
-        });
-        this.$router.go(-1);
+    back() {
+      this.$router.go(-1);
+    },
+  },
+  computed: {
+    ...mapState('mChapter', {
+      chapter: state => state.chapter,
+      content: state => state.content,
+    }),
+    // content: {
+    //   get() {
+    //     return this.$store.state.mChapter.content;
+    //   },
+    //   set(value) {
+    //     this.setContent(value);
+    //   },
+    // },
+    title: {
+      get() {
+        return this.$store.state.mChapter.title;
       },
-      back() {
-        this.$router.go(-1);
+      set(value) {
+        this.setTitle(value);
       },
     },
-    computed: {
-      ...mapState({
-        chapter: state => state.chapter,
-      }),
-    },
-  };
+  },
+};
 </script>
 
-<style lang="stylus">
-  .title
-    font-size: 19pt
-    padding-top: 10px;
-    text-align: center
-
-  .content
-    /*white-space pre*/
-    text-align left
-    font-size: 10pt
-    letter-spacing: 0.2em
-    line-height: 150%
-    padding-top: 15px
-    width: 85%
-
+<style lang="stylus" scoped>
+.title
+  font-size: 19pt
+  padding-top: 10px;
+  text-align: center
+.chapter-box
+  padding 20px 10px 0
+.content
+  /*white-space pre*/
+  text-align left
+  font-size: 10pt
+  letter-spacing: 0.2em
+  line-height: 150%
+  padding-top: 15px
+  width: 85%
 </style>

@@ -5,7 +5,10 @@
         <j-aside></j-aside>
       </el-aside>
       <el-container>
-        <j-tabs></j-tabs>
+        <!--        <j-tabs></j-tabs>-->
+        <div style="width: 100%;overflow-y: scroll;height: 100vh;">
+          <router-view></router-view>
+        </div>
       </el-container>
     </el-container>
   </el-container>
@@ -13,12 +16,12 @@
 
 <script>
   import aside from '@/components/aside.vue';
-  import tabs from '@/components/tabs.vue';
+  // import tabs from '@/components/tabs.vue';
 
   export default {
     components: {
       jAside: aside,
-      jTabs: tabs,
+      // jTabs: tabs,
     },
   };
 </script>

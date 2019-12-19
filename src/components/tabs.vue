@@ -15,7 +15,7 @@
         :name="item.name"
       >
       </el-tab-pane>
-      <div class="j-router">
+      <div class="j-router" tabindex="1">
         <router-view></router-view>
       </div>
     </el-tabs>
@@ -76,5 +76,5 @@
   .j-router
     height calc(100vh - 100px)
     overflow-y scroll
-    padding 15px
+    padding 0 15px
 </style>
