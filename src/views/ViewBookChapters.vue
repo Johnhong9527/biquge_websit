@@ -66,16 +66,10 @@
               <el-button @click="editClick(scope.row)" type="text" size="small"
                 >编辑</el-button
               >
-              <el-button
-                @click="addUp(scope.row, scope.$index)"
-                type="text"
-                size="small"
+              <el-button @click="add(scope.row, 0)" type="text" size="small"
                 >上加
               </el-button>
-              <el-button
-                @click="addDow(scope.row, scope.$index)"
-                type="text"
-                size="small"
+              <el-button @click="add(scope.row, 1)" type="text" size="small"
                 >下加
               </el-button>
               <el-button
@@ -91,7 +85,7 @@
       <el-pagination
         :page-sizes="[5, 10, 20, 40]"
         :page-size="pageSize"
-        :pager-count="5"
+        background
         :current-page="currentPage"
         layout="sizes, prev, pager, next, jumper"
         @size-change="sizeChange"
@@ -151,7 +145,7 @@ export default {
       'setCurrentPage',
       'nextBookPage',
     ]),
-    ...mapActions('mChapter', ['setNewChapter']),
+    ...mapActions('mChapter', ['setNewChapter', 'deleteChapter']),
     viewChapter(item) {
       this.$router.push(
         `/view-chapter/${this.book.index}/${item.aid}/${item.cid}`,
@@ -163,12 +157,12 @@ export default {
       );
     },
     editClick(item) {
-      console.log(item);
+      // console.log(item);
       this.$router.push(
         `/edit-chapter/${this.book.index}/${item.aid}/${item.cid}`,
       );
     },
-    addUp(item, index) {
+    add(item, index) {
       this.setNewChapter({
         aid: item.aid,
         cid: item.cid,
@@ -178,25 +172,22 @@ export default {
       });
       this.$router.push('/add-chapter');
     },
-    addDow(item, index) {
-      this.setNewChapter({
-        aid: item.aid,
-        cid: item.cid,
-        title: null,
-        index: index + 1,
-        book_index: this.book.index,
-      });
-      this.$router.push('/add-chapter');
-    },
     delRow(item) {
-      this.delChapter({
+      this.deleteChapter({
         ...item,
         index: this.book.index,
       });
+      setTimeout(() => {
+        this.getBook({
+          ...this.$route.params,
+          pageSize: this.pageSize,
+          currentPage: this.currentPage,
+        });
+      }, 200);
     },
     // 上一本
     prevBook(index) {
-      console.log(this.book.index + index);
+      // console.log(this.book.index + index);
       this.nextBookPage({
         page: this,
         index: this.book.index + index,

@@ -1,7 +1,7 @@
 <template>
   <el-row class="chapter-box" v-if="chapter && chapter.title">
     <el-col :span="24">
-      <el-input type="text" v-if="title" v-model="title">
+      <el-input type="text" v-model="title">
         <template slot="prepend">章节名</template>
       </el-input>
       <br />
@@ -42,11 +42,13 @@ export default {
   components: { Tinymce },
   watch: {
     $route(to, from) {
+      this.$refs.edit.init();
       if (to.path !== from.path) {
-        this.getChapter(this.$route.params);
-
-        this.tinymceKey = Date.parse(new Date());
-        this.$refs.edit.init();
+        this.$nextTick(() => {
+          this.getChapter(this.$route.params);
+          this.tinymceKey = Date.parse(new Date());
+          this.$refs.edit.init();
+        });
       }
     },
   },

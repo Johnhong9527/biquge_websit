@@ -11,7 +11,7 @@ const routes = [
     component: Home,
   },
   {
-    path: '/about',
+    path: '/public/about',
     name: 'about',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -20,7 +20,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/view-book-chapter/:index/:aid',
+    path: '/public/view-book-chapter/:index/:aid',
     name: 'viewBookChapter',
     component: () =>
       import(
@@ -28,20 +28,20 @@ const routes = [
       ),
   },
   {
-    path: '/view-chapter/:index/:aid/:cid',
+    path: '/public/view-chapter/:index/:aid/:cid',
     name: 'viewChapter',
     component: () =>
       import(/* webpackChunkName: "viewChapter" */ '../views/ViewChapter.vue'),
   },
   {
-    path: '/edit-chapter/:index/:aid/:cid',
+    path: '/public/edit-chapter/:index/:aid/:cid',
     name: 'EditChapter',
     component: () =>
       import(/* webpackChunkName: "EditChapter" */ '../views/EditChapter.vue'),
   },
 
   {
-    path: '/add-chapter',
+    path: '/public/add-chapter',
     name: 'AddChapter',
     component: () =>
       import(/* webpackChunkName: "AddChapter" */ '../views/addChapter.vue'),

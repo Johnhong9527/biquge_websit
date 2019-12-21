@@ -29,6 +29,7 @@ export default {
 			state.title = title;
 		},
 		setNewChapter(state, newChapter) {
+			console.log('newChapter', newChapter);
 			state.newChapter = newChapter;
 		},
 		setDialogVisible(state, dialogVisible) {
@@ -86,11 +87,21 @@ export default {
 								new_content += `<p>&nbsp;&nbsp;&nbsp;&nbsp;${el}</p>`;
 							}
 						});
+						new_content.replace('<p>&nbsp;</p>', '');
+						// eslint-disable-next-line camelcase,no-param-reassign
+						params.content = new_content;
+					}
+					if (pArr.length < 5 && content.indexOf('<p>&nbsp;</p>') > -1) {
+						// eslint-disable-next-line camelcase,no-param-reassign
+						let new_content = '';
+						// eslint-disable-next-line camelcase,no-param-reassign
+						new_content = params.content.replace('<p>&nbsp;</p>', '');
 						// eslint-disable-next-line camelcase,no-param-reassign
 						params.content = new_content;
 					}
 				}
 				// console.log(params.content);
+
 				await API.setChapter(params);
 			} catch (e) {
 				console.log(e);
@@ -116,7 +127,22 @@ export default {
 			{ book_index, index, aid, cid, title, content, href },
 		) {
 			// console.log(book_index, index, aid, cid, title, content);
-			API.creChapter({ book_index, index, aid, cid, title, content, href });
+			API.creChapter({
+				book_index,
+				index,
+				aid,
+				cid,
+				title,
+				content,
+				href,
+			});
+		},
+		// eslint-disable-next-line
+		async deleteChapter({ commit, state }, { index, aid, cid }) {
+			console.log(index, aid, cid);
+			console.log(state);
+			const result = await API.delChapter({ index, aid, cid });
+			console.log(result);
 		},
 	},
 };

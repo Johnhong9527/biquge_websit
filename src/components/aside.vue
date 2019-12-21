@@ -27,7 +27,7 @@ export default {
     return {
       name: 'aside',
       memus: '',
-      defaultActive: '',
+      defaultActive: ''
     };
   },
   created() {
@@ -56,8 +56,8 @@ export default {
       if (this.$route.path !== tab.path) {
         this.$router.push(tab.path);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

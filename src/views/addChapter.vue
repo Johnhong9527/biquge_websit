@@ -38,11 +38,11 @@ export default {
 		};
 	},
 	created() {
-		console.log(this.$refs);
+		// console.log(this.$refs);
 	},
 	mounted() {
 		if (this.newChapter && this.newChapter.aid) {
-			console.log('可以创建章节信息');
+			// console.log('可以创建章节信息');
 		} else {
 			this.$router.go(-1);
 		}
@@ -57,7 +57,7 @@ export default {
 		},
 		save() {
 			if (this.newChapter && this.newChapter.aid) {
-				console.log(this.newChapter);
+				// console.log(this.newChapter);
 				this.createChapter({
 					...this.newChapter,
 					title: this.title,
@@ -65,7 +65,7 @@ export default {
 					href: this.href,
 				});
 			} else {
-				console.log('回到首页');
+				// console.log('回到首页');
 			}
 		},
 	},

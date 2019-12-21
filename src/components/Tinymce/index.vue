@@ -129,7 +129,6 @@ export default {
     initTinymce() {
       // eslint-disable-next-line no-underscore-dangle
       const _this = this;
-
       window.tinymce.init({
         selector: `#${_this.tinymceId}`,
         language: _this.languageTypeList.en,

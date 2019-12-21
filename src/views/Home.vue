@@ -48,12 +48,14 @@ export default {
       this.$store.commit('mBook/setCurrentPage', 1);
       this.$router.push(`/view-book-chapter/${row.index}/${row.aid}`);
     },
+    // eslint-disable-next-line
     editClick(row) {
-      console.log('editClick', row);
+      // console.log('editClick', row);
       // this.getBook(row);
     },
+    // eslint-disable-next-line
     delClick(row) {
-      console.log('delClick', row);
+      // console.log('delClick', row);
       // this.delBook(row);
     },
     // 每页条数
