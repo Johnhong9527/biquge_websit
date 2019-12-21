@@ -11,6 +11,9 @@ export default {
   mutations: {
     getBook(state, book) {
       state.book = book;
+      if (book.chapters.length < 3) {
+        console.log(book.index, book.aid);
+      }
     },
     setTotal(state, total) {
       state.total = total;
@@ -43,6 +46,15 @@ export default {
     },
     setCurrentPage({ commit }, currentPage) {
       commit('setCurrentPage', currentPage);
+    },
+    // eslint-disable-next-line
+    async nextBookPage({ commit, state }, { page, index }) {
+      if (index > -1) {
+        const aid = await API.nextBook({
+          index,
+        });
+        page.$router.push(`/view-book-chapter/${index}/${aid.data}`);
+      }
     },
   },
 };

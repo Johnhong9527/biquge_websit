@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'addChapter',
@@ -55,7 +55,7 @@ export default {
     chapterInfo: Object,
   },
   methods: {
-    ...mapMutations(['setDialogVisible', 'addChapter']),
+    ...mapActions(['setDialogVisible', 'addChapter']),
     // eslint-disable-next-line no-unused-vars
     handleClose(done) {
       return false;
@@ -80,7 +80,7 @@ export default {
   computed: {
     dialogVisible: {
       get() {
-        return this.$store.state.dialogVisible;
+        return this.$store.state.mChapter.dialogVisible;
       },
       set(value) {
         this.setDialogVisible(value);

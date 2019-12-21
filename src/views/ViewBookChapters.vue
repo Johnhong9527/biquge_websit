@@ -1,6 +1,13 @@
 <template>
   <el-row tabindex="1" style="padding: 10px">
     <el-col class="book-info" :span="24">
+      <el-row type="flex" justify="end">
+        <el-col :span="8" :xs="24">
+          <el-button @click="back()" size="small">后退</el-button>
+          <el-button @click="prevBook(-1)" size="small">上一本</el-button>
+          <el-button @click="nextBook(1)" size="small">下一本</el-button>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="6" :xs="24">
           <div class="avatar">
@@ -93,12 +100,10 @@
       >
       </el-pagination>
     </el-col>
-    <addChapter :chapterInfo="chapterInfo" />
   </el-row>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import addChapter from '../components/addChapter.vue';
 
 export default {
   name: 'view-book-chapters',
@@ -116,8 +121,16 @@ export default {
       currentPage: this.currentPage,
     });
   },
-  components: {
-    addChapter,
+  watch: {
+    $route(to, from) {
+      if (to.path !== from.path) {
+        this.getBook({
+          ...this.$route.params,
+          pageSize: this.pageSize,
+          currentPage: this.currentPage,
+        });
+      }
+    },
   },
   computed: {
     ...mapState({
@@ -132,7 +145,13 @@ export default {
   },
   methods: {
     // ...mapActions(['setChapter', 'getBook', 'setDialogVisible', 'delChapter']),
-    ...mapActions('mBook', ['getBook', 'setPageSize', 'setCurrentPage']),
+    ...mapActions('mBook', [
+      'getBook',
+      'setPageSize',
+      'setCurrentPage',
+      'nextBookPage',
+    ]),
+    ...mapActions('mChapter', ['setNewChapter']),
     viewChapter(item) {
       this.$router.push(
         `/view-chapter/${this.book.index}/${item.aid}/${item.cid}`,
@@ -150,31 +169,44 @@ export default {
       );
     },
     addUp(item, index) {
-      this.chapterInfo = {
+      this.setNewChapter({
         aid: item.aid,
-        cid: null,
+        cid: item.cid,
         title: null,
         index,
         book_index: this.book.index,
-      };
-      this.setDialogVisible(true);
+      });
+      this.$router.push('/add-chapter');
     },
     addDow(item, index) {
-      // eslint-disable-next-line no-param-reassign
-      index += 1;
-      this.chapterInfo = {
+      this.setNewChapter({
         aid: item.aid,
-        cid: null,
+        cid: item.cid,
         title: null,
-        index,
+        index: index + 1,
         book_index: this.book.index,
-      };
-      this.setDialogVisible(true);
+      });
+      this.$router.push('/add-chapter');
     },
     delRow(item) {
       this.delChapter({
         ...item,
         index: this.book.index,
+      });
+    },
+    // 上一本
+    prevBook(index) {
+      console.log(this.book.index + index);
+      this.nextBookPage({
+        page: this,
+        index: this.book.index + index,
+      });
+    },
+    // 下一本
+    nextBook(index) {
+      this.nextBookPage({
+        page: this,
+        index: this.book.index + index,
       });
     },
     // 每页条数
@@ -192,6 +224,9 @@ export default {
         currentPage,
         pageSize: this.pageSize,
       });
+    },
+    back() {
+      this.$router.go(-1);
     },
   },
 };
@@ -216,7 +251,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 .chapter-table
-  height: calc(100vh - 250px)
+  height: calc(100vh - 270px)
   overflow-y: scroll;
 
 .intro

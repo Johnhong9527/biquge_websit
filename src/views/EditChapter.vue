@@ -1,18 +1,25 @@
 <template>
-  <el-row class="chapter-box">
+  <el-row class="chapter-box" v-if="chapter && chapter.title">
     <el-col :span="24">
       <el-input type="text" v-if="title" v-model="title">
         <template slot="prepend">章节名</template>
       </el-input>
       <br />
-      <br />
     </el-col>
-    <el-col :span="24" v-if="chapter && chapter.content" :key="tinymceKey">
-      <!-- <tinymce v-model="chapter.content" :key="tinymceKey" :height="500" /> -->
-      <tinymce :value="content" @input="setContent" :height="500" />
+    <el-col :span="24" :key="tinymceKey">
+      <tinymce
+        ref="edit"
+        v-if="chapter && chapter.content"
+        :value="chapter.content"
+        @input="setContent"
+        :height="500"
+      />
       <br />
+      <el-button @click="next(0)">上一章</el-button>
       <el-button @click="back">后退</el-button>
       <el-button @click="save">保存</el-button>
+      <el-button @click="format">格式化</el-button>
+      <el-button @click="next(1)">下一章</el-button>
     </el-col>
   </el-row>
 </template>
@@ -25,7 +32,7 @@ export default {
   async created() {
     await this.getChapter(this.$route.params);
     this.tinymceKey = Date.parse(new Date());
-    console.log(this.tinymceKey);
+    this.$refs.edit.init();
   },
   data() {
     return {
@@ -33,14 +40,29 @@ export default {
     };
   },
   components: { Tinymce },
+  watch: {
+    $route(to, from) {
+      if (to.path !== from.path) {
+        this.getChapter(this.$route.params);
+
+        this.tinymceKey = Date.parse(new Date());
+        this.$refs.edit.init();
+      }
+    },
+  },
   methods: {
     ...mapActions('mChapter', [
       'getChapter',
       'setChapter',
       'setContent',
       'setTitle',
+      'nextChapter',
     ]),
-
+    initChapter() {
+      this.getChapter(this.$route.params);
+      this.tinymceKey = Date.parse(new Date());
+      this.$refs.edit.init();
+    },
     save() {
       this.setChapter({
         ...this.$route.params,
@@ -49,9 +71,32 @@ export default {
         title: this.title,
       });
       // this.$router.go(-1);
+      setTimeout(() => {
+        this.initChapter();
+      }, 200);
+    },
+    format() {
+      this.setChapter({
+        ...this.$route.params,
+        ...this.chapter,
+        content: this.content,
+        title: this.title,
+        format: true,
+      });
+      setTimeout(() => {
+        this.initChapter();
+      }, 200);
     },
     back() {
       this.$router.go(-1);
+    },
+    next(index) {
+      this.nextChapter({
+        ...this.$route.params,
+        next: index,
+        page: this,
+        path: 'edit-chapter',
+      });
     },
   },
   computed: {

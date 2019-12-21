@@ -9,6 +9,9 @@ export default {
   getBook(params) {
     return axios.get('http://localhost:7001/book', { params });
   },
+  nextBook(params) {
+    return axios.get('http://localhost:7001/next-book', { params });
+  },
   delBook(params) {
     return axios.post(
       'http://localhost:7001/delete-book',
@@ -18,6 +21,12 @@ export default {
   getChapter(params) {
     return axios.post(
       'http://localhost:7001/get-chapter',
+      qs.stringify(params),
+    );
+  },
+  nextChapter(params) {
+    return axios.post(
+      'http://localhost:7001/next-chapter',
       qs.stringify(params),
     );
   },

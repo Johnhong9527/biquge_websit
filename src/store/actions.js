@@ -10,7 +10,7 @@ export default {
       const { total, data } = books.data;
       // commit('getBookList', books.data.data);
       commit('home/setTotal', total);
-      commit('home/setTableData', data);
+      commit('home/setBookList', data);
     } catch (e) {
       console.log(e);
     }

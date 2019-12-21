@@ -1,25 +1,27 @@
 <template>
   <div>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="index" label="索引"> </el-table-column>
-      <el-table-column prop="aid" label="书籍ID"> </el-table-column>
-      <el-table-column prop="title" label="书名"> </el-table-column>
-      <el-table-column prop="author" label="作者"> </el-table-column>
-      <el-table-column prop="length" label="章节数"> </el-table-column>
-      <el-table-column fixed="right" label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small"
-            >查看</el-button
-          >
-          <el-button @click="editClick(scope.row)" type="text" size="small"
-            >编辑</el-button
-          >
-          <el-button @click="delClick(scope.row)" type="text" size="small"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="books-table">
+      <el-table :data="bookList" border style="width: 100%">
+        <el-table-column fixed prop="index" label="索引"> </el-table-column>
+        <el-table-column prop="aid" label="书籍ID"> </el-table-column>
+        <el-table-column prop="title" label="书名"> </el-table-column>
+        <el-table-column prop="author" label="作者"> </el-table-column>
+        <el-table-column prop="length" label="章节数"> </el-table-column>
+        <el-table-column fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small"
+              >查看</el-button
+            >
+            <el-button @click="editClick(scope.row)" type="text" size="small"
+              >编辑</el-button
+            >
+            <el-button @click="delClick(scope.row)" type="text" size="small"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <el-pagination
       :page-sizes="[5, 10, 20, 40]"
       :page-size="pageSize"
@@ -87,7 +89,7 @@ export default {
       total: state => state.total,
       pageSize: state => state.pageSize,
       currentPage: state => state.currentPage,
-      tableData: state => state.tableData,
+      bookList: state => state.bookList,
     }),
   },
 };
@@ -97,4 +99,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+.books-table
+  height: calc(100vh - 250px);
+  overflow-y: scroll;
 </style>

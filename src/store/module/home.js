@@ -4,7 +4,7 @@ export default {
     total: 0,
     pageSize: 5,
     currentPage: 1,
-    tableData: [],
+    bookList: [],
   },
   mutations: {
     setTotal(state, total) {
@@ -16,8 +16,8 @@ export default {
     setCurrentPage(state, currentPage) {
       state.currentPage = currentPage;
     },
-    setTableData(state, tableData) {
-      state.tableData = tableData;
+    setBookList(state, books) {
+      state.bookList = books;
     },
   },
   actions: {
@@ -30,8 +30,8 @@ export default {
     setCurrentPage({ commit }, currentPage) {
       commit('setCurrentPage', currentPage);
     },
-    setTableData({ commit }, tableData) {
-      commit('setTableData', tableData);
+    setBookList({ commit }, books) {
+      commit('setBookList', books);
     },
   },
   getters: {},
