@@ -109,6 +109,7 @@ export default {
     };
   },
   async created() {
+    console.log(12);
     await this.getBook({
       ...this.$route.params,
       pageSize: this.pageSize,

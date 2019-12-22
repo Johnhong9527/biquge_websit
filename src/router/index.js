@@ -7,11 +7,12 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
+    // redirect: '/public',
     name: 'home',
     component: Home,
   },
   {
-    path: '/public/about',
+    path: '/about',
     name: 'about',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -20,7 +21,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/public/view-book-chapter/:index/:aid',
+    path: '/view-book-chapter/:index/:aid',
     name: 'viewBookChapter',
     component: () =>
       import(
@@ -28,20 +29,20 @@ const routes = [
       ),
   },
   {
-    path: '/public/view-chapter/:index/:aid/:cid',
+    path: '/view-chapter/:index/:aid/:cid',
     name: 'viewChapter',
     component: () =>
       import(/* webpackChunkName: "viewChapter" */ '../views/ViewChapter.vue'),
   },
   {
-    path: '/public/edit-chapter/:index/:aid/:cid',
+    path: '/edit-chapter/:index/:aid/:cid',
     name: 'EditChapter',
     component: () =>
       import(/* webpackChunkName: "EditChapter" */ '../views/EditChapter.vue'),
   },
 
   {
-    path: '/public/add-chapter',
+    path: '/add-chapter',
     name: 'AddChapter',
     component: () =>
       import(/* webpackChunkName: "AddChapter" */ '../views/addChapter.vue'),
@@ -50,7 +51,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: process.env.NODE_ENV === 'production' ? '/public' : '/',
   routes,
 });
 
