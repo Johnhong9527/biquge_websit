@@ -44,9 +44,12 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <div class="intro text-left">
-                {{ book.intor ? book.intor : '空' }}
-              </div>
+              <div
+                class="intro text-left"
+                v-if="book.intro"
+                v-html="book.intro"
+              ></div>
+              <div v-else>空</div>
             </el-col>
           </el-row>
         </el-col>
@@ -148,20 +151,17 @@ export default {
     ]),
     ...mapActions('mChapter', ['setNewChapter', 'deleteChapter']),
     viewChapter(item) {
-      this.$router.push(
-        `/view-chapter/${this.book.index}/${item.aid}/${item.cid}`,
-      );
+      this.$router.push(`/chapter/${this.book.index}/${item.aid}/${item.cid}`);
     },
     viewClick(item) {
-      this.$router.push(
-        `/view-chapter/${this.book.index}/${item.aid}/${item.cid}`,
-      );
+      this.$router.push(`/chapter/${this.book.index}/${item.aid}/${item.cid}`);
     },
     editClick(item) {
+      console.log(this.book.open_id);
       // console.log(item);
-      this.$router.push(
-        `/edit-chapter/${this.book.index}/${item.aid}/${item.cid}`,
-      );
+      // this.$router.push(
+      //   `/edit-chapter/${this.book.index}/${item.aid}/${item.cid}`,
+      // );
     },
     add(item, index) {
       this.setNewChapter({

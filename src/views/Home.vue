@@ -46,7 +46,7 @@ export default {
     ...mapActions('home', ['setTotal', 'setPageSize', 'setCurrentPage']),
     handleClick(row) {
       this.$store.commit('mBook/setCurrentPage', 1);
-      this.$router.push(`/view-book-chapter/${row.index}/${row.aid}`);
+      this.$router.push(`/book/${row.index}/${row.aid}`);
     },
     // eslint-disable-next-line
     editClick(row) {

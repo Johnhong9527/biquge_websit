@@ -49,11 +49,11 @@ export default {
     },
     // eslint-disable-next-line
     async nextBookPage({ commit, state }, { page, index }) {
-      if (index > -1) {
+      if (index > 0) {
         const aid = await API.nextBook({
           index,
         });
-        page.$router.push(`/view-book-chapter/${index}/${aid.data}`);
+        page.$router.push(`/book/${index}/${aid.data}`);
       }
     },
   },

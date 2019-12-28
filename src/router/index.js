@@ -12,40 +12,37 @@ const routes = [
     component: Home,
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    path: '/book/:index/:aid',
+    name: 'Book',
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
+      import(/* webpackChunkName: "Book" */ '../views/book/view.vue'),
   },
   {
-    path: '/view-book-chapter/:index/:aid',
-    name: 'viewBookChapter',
+    path: '/create-book',
+    name: 'CreateBook',
     component: () =>
-      import(
-        /* webpackChunkName: "viewBookChapter" */ '../views/ViewBookChapters.vue'
-      ),
+      import(/* webpackChunkName: "CreateBook" */ '../views/book/create.vue'),
   },
   {
-    path: '/view-chapter/:index/:aid/:cid',
-    name: 'viewChapter',
+    path: '/chapter/:index/:aid/:cid',
+    name: 'Chapter',
     component: () =>
-      import(/* webpackChunkName: "viewChapter" */ '../views/ViewChapter.vue'),
+      import(/* webpackChunkName: "Chapter" */ '../views/chapter/view.vue'),
   },
   {
     path: '/edit-chapter/:index/:aid/:cid',
     name: 'EditChapter',
     component: () =>
-      import(/* webpackChunkName: "EditChapter" */ '../views/EditChapter.vue'),
+      import(/* webpackChunkName: "EditChapter" */ '../views/chapter/edit.vue'),
   },
 
   {
-    path: '/add-chapter',
+    path: '/create-chapter',
     name: 'AddChapter',
     component: () =>
-      import(/* webpackChunkName: "AddChapter" */ '../views/addChapter.vue'),
+      import(
+        /* webpackChunkName: "AddChapter" */ '../views/chapter/create.vue'
+      ),
   },
 ];
 

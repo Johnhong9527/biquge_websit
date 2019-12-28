@@ -25,7 +25,7 @@
 </template>
 <script type="text/javascript">
 import { mapState, mapActions } from 'vuex';
-import Tinymce from '../components/Tinymce/index.vue';
+import Tinymce from '@/components/Tinymce/index.vue';
 
 export default {
 	name: 'add-chapter',
