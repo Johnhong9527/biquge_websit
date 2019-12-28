@@ -11,9 +11,6 @@ export default {
   mutations: {
     getBook(state, book) {
       state.book = book;
-      if (book.chapters.length < 3) {
-        console.log(book.index, book.aid);
-      }
     },
     setTotal(state, total) {
       state.total = total;

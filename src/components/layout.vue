@@ -15,41 +15,41 @@
 </template>
 
 <script>
-  import aside from '@/components/aside.vue';
-  // import tabs from '@/components/tabs.vue';
+import aside from '@/components/aside.vue';
+// import tabs from '@/components/tabs.vue';
 
-  export default {
-    components: {
-      jAside: aside,
-      // jTabs: tabs,
-    },
-  };
+export default {
+  components: {
+    jAside: aside,
+    // jTabs: tabs,
+  },
+};
 </script>
 
 <style lang="stylus">
-  .el-header, .el-footer {
-    background-color: #ffffff;
-    color: #333;
-    text-align: center;
-    /*line-height: 60px;*/
-  }
+.el-header, .el-footer {
+  background-color: #ffffff;
+  color: #333;
+  text-align: center;
+  /*line-height: 60px;*/
+}
 
-  .el-aside {
-    background-color: #fff;
-    color: #333;
-    text-align: center;
-    overflow-x: hidden;
-    border-right-style: groove;
-    /*line-height: 200px;*/
-  }
+.el-aside {
+  background-color: #fff;
+  color: #333;
+  text-align: center;
+  overflow-x: hidden;
+  border-right-style: groove;
+  /*line-height: 200px;*/
+}
 
-  .el-main {
-    background-color: #dddddd;
-    color: #333;
-    text-align: center;
-  }
+.el-main {
+  background-color: #dddddd;
+  color: #333;
+  text-align: center;
+}
 
-  .el-container {
-    min-width: 500px
-  }
+.el-container {
+  min-width: 500px
+}
 </style>

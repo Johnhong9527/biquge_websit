@@ -44,14 +44,16 @@ export default {
 			);
 		},
 		back() {
-			this.$router.go(-1);
+			this.$router.push(
+				`/book/${this.$route.params.index}/${this.$route.params.aid}`,
+			);
 		},
 		next(index) {
 			this.nextChapter({
 				...this.$route.params,
 				next: index,
 				page: this,
-				path: 'view-chapter',
+				path: 'chapter',
 			});
 		},
 	},
@@ -77,7 +79,7 @@ export default {
   margin-left: 5%
   width: 90%
   overflow-y: scroll
-  height: calc(100vh - 200px)
+  height: calc(100vh - 160px)
   padding: 15px
   border 1px solid #ddd
 

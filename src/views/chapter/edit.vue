@@ -90,7 +90,9 @@ export default {
 			}, 200);
 		},
 		back() {
-			this.$router.go(-1);
+			this.$router.push(
+				`/chapter/${this.$route.params.index}/${this.$route.params.aid}/${this.$route.params.cid}`,
+			);
 		},
 		next(index) {
 			this.nextChapter({

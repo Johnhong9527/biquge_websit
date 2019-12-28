@@ -44,6 +44,20 @@ const routes = [
         /* webpackChunkName: "AddChapter" */ '../views/chapter/create.vue'
       ),
   },
+  {
+    path: '/reptile',
+    name: 'Reptile',
+    component: () =>
+      import(/* webpackChunkName: "Reptile" */ '../views/reptile/index.vue'),
+  },
+  {
+    path: '/create-reptile',
+    name: 'CreateReptile',
+    component: () =>
+      import(
+        /* webpackChunkName: "CreateReptile" */ '../views/reptile/create.vue'
+      ),
+  },
 ];
 
 const router = new VueRouter({

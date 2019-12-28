@@ -1,7 +1,7 @@
 <template>
   <el-row tabindex="1" style="padding: 10px">
     <el-col class="book-info" :span="24">
-      <el-row type="flex" justify="end">
+      <el-row type="flex" justify="end" class="btn">
         <el-col :span="8" :xs="24">
           <el-button @click="back()" size="small">后退</el-button>
           <el-button @click="prevBook(-1)" size="small">上一本</el-button>
@@ -112,7 +112,6 @@ export default {
     };
   },
   async created() {
-    console.log(12);
     await this.getBook({
       ...this.$route.params,
       pageSize: this.pageSize,
@@ -150,18 +149,13 @@ export default {
       'nextBookPage',
     ]),
     ...mapActions('mChapter', ['setNewChapter', 'deleteChapter']),
-    viewChapter(item) {
-      this.$router.push(`/chapter/${this.book.index}/${item.aid}/${item.cid}`);
-    },
     viewClick(item) {
       this.$router.push(`/chapter/${this.book.index}/${item.aid}/${item.cid}`);
     },
     editClick(item) {
-      console.log(this.book.open_id);
-      // console.log(item);
-      // this.$router.push(
-      //   `/edit-chapter/${this.book.index}/${item.aid}/${item.cid}`,
-      // );
+      this.$router.push(
+        `/edit-chapter/${this.book.index}/${item.aid}/${item.cid}`,
+      );
     },
     add(item, index) {
       this.setNewChapter({
@@ -171,10 +165,10 @@ export default {
         index,
         book_index: this.book.index,
       });
-      this.$router.push('/add-chapter');
+      this.$router.push('/create-chapter');
     },
     delRow(item) {
-      this.deleteChapter({
+      /* this.deleteChapter({
         ...item,
         index: this.book.index,
       });
@@ -184,7 +178,7 @@ export default {
           pageSize: this.pageSize,
           currentPage: this.currentPage,
         });
-      }, 200);
+      }, 200); */
     },
     // 上一本
     prevBook(index) {
@@ -218,7 +212,7 @@ export default {
       });
     },
     back() {
-      this.$router.go(-1);
+      this.$router.push('/');
     },
   },
 };
@@ -227,12 +221,24 @@ export default {
 <style lang="stylus">
 .book-info
   margin-bottom 15px
+.btn
+  position: fixed;
+  left: 200px;
+  right: 20px;
+  z-index: 10;
 
 .avatar
+  border 1px solid #ddd
+  height: 180px;
+  width: 90%;
+  max-width: 150px;
+  margin-left 35px
+  margin-top 20px
   img
     border: medium none;
-    height: 150px;
-    width: 120px;
+    display block
+    height: 100%;
+    width: 100%
     margin: 3px;
 
 .book-name
@@ -240,16 +246,19 @@ export default {
   font-size 28px
   font-weight 700
   overflow: hidden;
-  text-overflow: ellipsis;
+  // text-overflow: ellipsis;
   white-space: nowrap;
 .chapter-table
-  height: calc(100vh - 270px)
+  height: calc(100vh - 310px)
   overflow-y: scroll;
 
 .intro
   margin-top 15px
   padding-top 5px
   border-top 1px dashed
+  overflow-y: scroll
+  max-height: 120px
+  height: 120px
 
 .chapter
   /*font-size 12px*/
