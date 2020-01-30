@@ -6,14 +6,40 @@
 			</el-input>
 			<br />
 		</el-col>
+		<div class="editor-wrapper" v-if="chapter && chapter.content">
+			<editor
+				api-key="v0e1dfqz3ywsmldk0ge6vohgy5ivbgla02xpioua0oukv7c1"
+				cloud-channel="5"
+				:disabled="false"
+				id="uuid"
+				:init="{
+					height: '500',
+					plugins: [
+						'advlist autolink lists link image charmap print preview anchor',
+						'searchreplace visualblocks code fullscreen',
+						'insertdatetime media table paste code help wordcount',
+					],
+					toolbar:
+						'undo redo | formatselect | bold italic backcolor | \
+           alignleft aligncenter alignright alignjustify | \
+           bullist numlist outdent indent | removeformat | help',
+					language: 'zh_CN',
+				}"
+				language_url="./zh_CN.js"
+				:initial-value="chapter.content"
+				tag-name="editor-wrapper"
+				:value="chapter.content"
+			/>
+		</div>
+
 		<el-col :span="24" :key="tinymceKey">
-			<tinymce
+			<!-- <tinymce
 				ref="edit"
 				v-if="chapter && chapter.content"
 				:value="chapter.content"
 				@input="setContent"
 				:height="500"
-			/>
+			/> -->
 			<br />
 			<el-button @click="next(0)">上一章</el-button>
 			<el-button @click="back">后退</el-button>
@@ -24,6 +50,7 @@
 	</el-row>
 </template>
 <script>
+import Editor from '@tinymce/tinymce-vue';
 import { mapState, mapActions } from 'vuex';
 import Tinymce from '@/components/Tinymce/index.vue';
 
@@ -32,22 +59,23 @@ export default {
 	async created() {
 		await this.getChapter(this.$route.params);
 		this.tinymceKey = Date.parse(new Date());
-		this.$refs.edit.init();
+		// this.$refs.edit.init();
 	},
 	data() {
 		return {
 			tinymceKey: '',
 		};
 	},
-	components: { Tinymce },
+	// eslint-disable-next-line
+	components: { Tinymce, Editor },
 	watch: {
 		$route(to, from) {
-			this.$refs.edit.init();
+			// this.$refs.edit.init();
 			if (to.path !== from.path) {
 				this.$nextTick(() => {
 					this.getChapter(this.$route.params);
 					this.tinymceKey = Date.parse(new Date());
-					this.$refs.edit.init();
+					// this.$refs.edit.init();
 				});
 			}
 		},
@@ -143,4 +171,6 @@ export default {
   line-height: 150%
   padding-top: 15px
   width: 85%
+.editor-wrapper
+	text-align: left
 </style>
