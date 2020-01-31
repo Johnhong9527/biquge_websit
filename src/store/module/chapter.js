@@ -24,14 +24,13 @@ export default {
       state.book = book;
     },
     setContent(state, content) {
-      console.log(27)
       state.content = content;
     },
     setTitle(state, title) {
       state.title = title;
     },
     setNewChapter(state, newChapter) {
-      console.log('newChapter', newChapter);
+      // console.log('newChapter', newChapter);
       state.newChapter = newChapter;
     },
     setDialogVisible(state, dialogVisible) {
