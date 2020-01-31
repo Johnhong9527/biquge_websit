@@ -4,7 +4,7 @@
       <el-input type="text" v-model="title">
         <template slot="prepend">章节名</template>
       </el-input>
-      <br />
+      <br/>
     </el-col>
     <div class="editor-wrapper" v-if="chapter && chapter.content">
       <editor
@@ -12,6 +12,7 @@
         cloud-channel="5"
         :disabled="false"
         id="uuid"
+        ref="edit"
         :init="{
 					// language_url: 'http://127.0.0.1:8888/zh_CN.js',
 					 language_url: 'http://test.honghaitao.net/zh_CN.js',
@@ -27,9 +28,8 @@
            alignleft aligncenter alignright alignjustify | \
            bullist numlist outdent indent | removeformat | help',
 				}"
-        :initial-value="chapter.content"
         tag-name="editor-wrapper"
-        v-model="chapter.content"
+        v-model="content"
       />
     </div>
 
@@ -41,7 +41,7 @@
 				@input="setContent"
 				:height="500"
       />-->
-      <br />
+      <br/>
       <el-button @click="next(0)">上一章</el-button>
       <el-button @click="back">后退</el-button>
       <el-button @click="save">保存</el-button>
@@ -51,134 +51,144 @@
   </el-row>
 </template>
 <script>
-import Editor from "@tinymce/tinymce-vue";
-import { mapState, mapActions } from "vuex";
-import Tinymce from "@/components/Tinymce/index.vue";
+  import Editor from "@tinymce/tinymce-vue";
+  import {Loading} from 'element-ui';
+  import {mapState, mapActions} from "vuex";
 
-export default {
-  name: "view-chapter",
-  async created() {
-    await this.getChapter(this.$route.params);
-    this.tinymceKey = Date.parse(new Date());
-    // this.$refs.edit.init();
-  },
-  data() {
-    return {
-      tinymceKey: ""
-    };
-  },
-  // eslint-disable-next-line
-  components: { Tinymce, Editor },
-  watch: {
-    $route(to, from) {
-      // this.$refs.edit.init();
-      if (to.path !== from.path) {
-        this.$nextTick(() => {
-          this.getChapter(this.$route.params);
-          this.tinymceKey = Date.parse(new Date());
-          // this.$refs.edit.init();
-        });
-      }
-    }
-  },
-  methods: {
-    ...mapActions("mChapter", [
-      "getChapter",
-      "setChapter",
-      "setContent",
-      "setTitle",
-      "nextChapter"
-    ]),
-    initChapter() {
-      this.getChapter(this.$route.params);
+  export default {
+    name: "view-chapter",
+    data() {
+      return {
+        tinymceKey: "",
+        onOnce: 0
+      };
+    },
+    async created() {
+      await this.getChapter(this.$route.params);
       this.tinymceKey = Date.parse(new Date());
-      // this.$refs.edit.init();
+      const loadingInstance = Loading.service({});
+      const getDom = setInterval(() => {
+        const dom = document.getElementById('u0');
+        if (dom !== null) {
+          loadingInstance.close();
+          clearInterval(getDom)
+        }
+      }, 1000)
     },
-    save() {
-      this.setChapter({
-        ...this.$route.params,
-        ...this.chapter,
-        content: this.content,
-        title: this.title
-      });
-      // this.$router.go(-1);
-      setTimeout(() => {
-        this.initChapter();
-      }, 200);
+    // eslint-disable-next-line
+    components: {Editor},
+    watch: {
+      $route(to, from) {
+        // this.$refs.edit.init();
+        if (to.path !== from.path) {
+          this.$nextTick(() => {
+            this.getChapter(this.$route.params);
+            this.tinymceKey = Date.parse(new Date());
+            this.onOnce = 0
+          });
+        }
+      }
     },
-    format() {
-      this.setChapter({
-        ...this.$route.params,
-        ...this.chapter,
-        content: this.content,
-        title: this.title,
-        format: true
-      });
-      setTimeout(() => {
-        this.initChapter();
-      }, 200);
-    },
-    back() {
-      this.$router.push(
-        `/chapter/${this.$route.params.index}/${this.$route.params.aid}/${this.$route.params.cid}`
-      );
-    },
-    next(index) {
-      this.nextChapter({
-        ...this.$route.params,
-        next: index,
-        page: this,
-        path: "edit-chapter"
-      });
-    }
-  },
-  computed: {
-    ...mapState("mChapter", {
-      chapter: state => state.chapter,
-      content: state => state.content
-    }),
-    // content: {
-    //   get() {
-    //     return this.$store.state.mChapter.content;
-    //   },
-    //   set(value) {
-    //     this.setContent(value);
-    //   },
-    // },
-    title: {
-      get() {
-        return this.$store.state.mChapter.title;
+    methods: {
+      ...mapActions("mChapter", [
+        "getChapter",
+        "setChapter",
+        "setContent",
+        "setTitle",
+        "nextChapter"
+      ]),
+      initChapter() {
+        this.getChapter(this.$route.params);
+        this.tinymceKey = Date.parse(new Date());
       },
-      set(value) {
-        this.setTitle(value);
+      save() {
+        this.setChapter({
+          ...this.$route.params,
+          ...this.chapter,
+          content: this.content,
+          title: this.title
+        });
+        // this.$router.go(-1);
+        setTimeout(() => {
+          this.initChapter();
+        }, 200);
+      },
+      format() {
+        this.setChapter({
+          ...this.$route.params,
+          ...this.chapter,
+          content: this.content,
+          title: this.title,
+          format: true
+        });
+        setTimeout(() => {
+          this.initChapter();
+        }, 200);
+      },
+      back() {
+        this.$router.push(
+          `/chapter/${this.$route.params.index}/${this.$route.params.aid}/${this.$route.params.cid}`
+        );
+      },
+      next(index) {
+        if (!this.onOnce) {
+          this.onOnce = 1;
+          this.nextChapter({
+            ...this.$route.params,
+            next: index,
+            page: this,
+            path: "edit-chapter"
+          });
+        }
+      }
+    },
+    computed: {
+      ...mapState("mChapter", {
+        chapter: state => state.chapter
+      }),
+      // eslint-disable-next-line vue/no-dupe-keys
+      content: {
+        get() {
+          return this.$store.state.mChapter.content;
+        },
+        set(value) {
+          this.setContent(value);
+        },
+      },
+      title: {
+        get() {
+          return this.$store.state.mChapter.title;
+        },
+        set(value) {
+          this.setTitle(value);
+        }
       }
     }
-  }
-};
+  };
 </script>
 
 <style lang="stylus" scoped>
-.title {
-  font-size: 19pt;
-  padding-top: 10px;
-  text-align: center;
-}
+  .title {
+    font-size: 19pt;
+    padding-top: 10px;
+    text-align: center;
+  }
 
-.chapter-box {
-  padding: 20px 10px 0;
-}
+  .chapter-box {
+    padding: 20px 10px 0;
+  }
 
-.content {
-  /* white-space pre */
-  text-align: left;
-  font-size: 10pt;
-  letter-spacing: 0.2em;
-  line-height: 150%;
-  padding-top: 15px;
-  width: 85%;
-}
+  .content {
+    /* white-space pre */
+    text-align: left;
+    font-size: 10pt;
+    letter-spacing: 0.2em;
+    line-height: 150%;
+    padding-top: 15px;
+    width: 85%;
+  }
 
-.editor-wrapper {
-  text-align: left;
-}
+  .editor-wrapper {
+    text-align: left;
+  }
 </style>
