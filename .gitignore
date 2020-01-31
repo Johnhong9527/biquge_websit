@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+static/tinymce
+src/views/book/edit/tinymce
 
 # local env files
 .env.local

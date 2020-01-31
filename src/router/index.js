@@ -12,6 +12,12 @@ const routes = [
     component: Home,
   },
   {
+    path: '/book/edit',
+    name: 'BookEdit',
+    component: () =>
+      import(/* webpackChunkName: "Book" */ '../views/book/edit/index.vue'),
+  },
+  {
     path: '/book/:index/:aid',
     name: 'Book',
     component: () =>
@@ -42,7 +48,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "AddChapter" */ '../views/chapter/create.vue'
-      ),
+        ),
   },
   {
     path: '/reptile',
@@ -56,7 +62,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "CreateReptile" */ '../views/reptile/create.vue'
-      ),
+        ),
   },
 ];
 

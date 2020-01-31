@@ -18,11 +18,6 @@
 					 language_url: 'http://test.honghaitao.net/zh_CN.js',
 					 language: 'zh_CN',
 					height: '500',
-					plugins: [
-						'advlist autolink lists link image charmap print preview anchor',
-						'searchreplace visualblocks code fullscreen',
-						'insertdatetime media table paste code help wordcount',
-					],
 					toolbar:
 						'undo redo | formatselect | bold italic backcolor | \
            alignleft aligncenter alignright alignjustify | \
@@ -66,7 +61,9 @@
     async created() {
       await this.getChapter(this.$route.params);
       this.tinymceKey = Date.parse(new Date());
-      const loadingInstance = Loading.service({});
+      const loadingInstance = Loading.service({
+        text: '正在加载编辑器'
+      });
       const getDom = setInterval(() => {
         const dom = document.getElementById('u0');
         if (dom !== null) {

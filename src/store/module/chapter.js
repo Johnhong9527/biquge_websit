@@ -72,10 +72,12 @@ export default {
         // console.log(content.indexOf('/\n'));
         // 处理数据
         if (format) {
+          console.log(75);
           // test
           const pArr = content.split('</p>');
+          console.log(pArr)
           if (
-            pArr.length < 5 &&
+            pArr.length < 5 ||
             content.indexOf('&nbsp;&nbsp;&nbsp;&nbsp;') > -1
           ) {
             // eslint-disable-next-line no-const-assign
